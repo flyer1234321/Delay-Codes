@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Delay Codes">
+<meta name="theme-color" content="#0b1220">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-180.png">
+<title>IATA Delay Codes</title>
+<style>
+:root{
+  --bg:#0b1220; --card:#141d30; --card2:#1a2540; --border:#25324e;
+  --text:#e8edf6; --dim:#8fa0bc; --accent:#4da3ff; --chipbg:#16203a;
+  --c10:#4da3ff; --c20:#b58cff; --c30:#ffb347; --c40:#ff6b6b; --c50:#ff8fa3;
+  --c60:#5ad1b0; --c70:#7fc8ff; --c80:#ffd166; --c90:#c0cad9;
+}
+*{box-sizing:border-box; -webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,sans-serif;
+  height:100%; overscroll-behavior-y:none}
+header{position:sticky;top:0;z-index:10;background:rgba(11,18,32,.92);
+  -webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);
+  padding:calc(env(safe-area-inset-top) + 10px) 14px 8px;border-bottom:1px solid var(--border)}
+.titlebar{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+h1{font-size:17px;margin:0;font-weight:700;letter-spacing:.3px;display:flex;align-items:center;gap:8px}
+h1 svg{flex:none}
+.lang{display:flex;border:1px solid var(--border);border-radius:9px;overflow:hidden;font-size:13px;font-weight:600}
+.lang button{background:transparent;color:var(--dim);border:0;padding:6px 12px;font:inherit;cursor:pointer}
+.lang button.on{background:var(--accent);color:#08101f}
+.searchwrap{position:relative}
+#q{width:100%;padding:12px 40px 12px 40px;font-size:17px;border-radius:12px;
+  border:1px solid var(--border);background:var(--card);color:var(--text);outline:none}
+#q:focus{border-color:var(--accent)}
+#q::placeholder{color:var(--dim)}
+.searchwrap .mag{position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--dim);pointer-events:none}
+#clear{position:absolute;right:8px;top:50%;transform:translateY(-50%);border:0;background:var(--border);
+  color:var(--text);width:24px;height:24px;border-radius:50%;font-size:14px;line-height:1;display:none;cursor:pointer}
+.chips{display:flex;gap:7px;overflow-x:auto;padding:10px 0 4px;scrollbar-width:none;-ms-overflow-style:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;border:1px solid var(--border);background:var(--chipbg);color:var(--dim);
+  border-radius:999px;padding:7px 13px;font-size:13px;font-weight:600;cursor:pointer;
+  display:flex;align-items:center;gap:6px;white-space:nowrap}
+.chip .dot{width:8px;height:8px;border-radius:50%;background:var(--dim)}
+.chip.on{background:var(--accent);border-color:var(--accent);color:#08101f}
+.chip.on .dot{background:#08101f}
+main{padding:10px 14px calc(env(safe-area-inset-bottom) + 30px);max-width:640px;margin:0 auto}
+.count{font-size:12px;color:var(--dim);margin:6px 2px 10px}
+.grouphead{background:var(--card2);border:1px solid var(--border);border-radius:14px;
+  padding:13px 14px;margin:10px 0 8px;display:flex;align-items:center;gap:11px;cursor:pointer;user-select:none}
+.grouphead:active{background:var(--border)}
+.grouphead .dot{width:11px;height:11px;border-radius:50%;flex:none}
+.grouphead .range{font-size:15px;font-weight:800;font-variant-numeric:tabular-nums;flex:none}
+.grouphead .gname{flex:1;font-size:14.5px;font-weight:650;min-width:0}
+.grouphead .cnt{font-size:12px;font-weight:700;color:var(--dim);background:var(--chipbg);
+  border:1px solid var(--border);border-radius:999px;padding:3px 9px;flex:none}
+.grouphead .chev{flex:none;color:var(--dim);transition:transform .18s}
+.grouphead.open .chev{transform:rotate(90deg)}
+.groupbody{display:none}
+.groupbody.open{display:block}
+.card{background:var(--card);border:1px solid var(--border);border-radius:14px;
+  padding:12px 14px;margin-bottom:8px;cursor:pointer;transition:background .15s}
+.card:active{background:var(--card2)}
+.row{display:flex;align-items:center;gap:12px}
+.codebox{flex:none;width:52px;text-align:center}
+.num{font-size:24px;font-weight:800;font-variant-numeric:tabular-nums;line-height:1.1}
+.alpha{font-size:11px;font-weight:700;color:var(--dim);letter-spacing:1px}
+.info{flex:1;min-width:0}
+.name{font-size:15px;font-weight:650;line-height:1.25}
+.desc{font-size:13px;color:var(--dim);margin-top:2px;line-height:1.35}
+mark{background:transparent;color:var(--accent);font-weight:700}
+.detail{display:none;margin-top:10px;padding-top:10px;border-top:1px solid var(--border);font-size:13.5px;line-height:1.45}
+.card.open .detail{display:block}
+.detail .lbl{font-size:11px;font-weight:700;color:var(--dim);text-transform:uppercase;letter-spacing:.7px;margin-bottom:2px}
+.detail .other{color:var(--dim);margin-top:8px}
+.copy{margin-top:10px;background:var(--chipbg);border:1px solid var(--border);color:var(--accent);
+  font:inherit;font-size:13px;font-weight:600;padding:7px 14px;border-radius:9px;cursor:pointer}
+.copy:active{background:var(--border)}
+.empty{text-align:center;color:var(--dim);padding:50px 20px;font-size:15px}
+.empty .big{font-size:34px;margin-bottom:10px}
+</style>
+</head>
+<body>
+<header>
+  <div class="titlebar">
+    <h1><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z" fill="#4da3ff"/></svg><span id="t-title">IATA Delay Codes</span></h1>
+    <div class="lang" role="group" aria-label="Språk">
+      <button id="lang-sv">SV</button><button id="lang-en">EN</button>
+    </div>
+  </div>
+  <div class="searchwrap">
+    <svg class="mag" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
+    <input id="q" type="search" autocomplete="off" autocorrect="off" spellcheck="false" placeholder="Sök kod, ord eller orsak…">
+    <button id="clear" aria-label="Rensa">✕</button>
+  </div>
+  <div class="chips" id="chips"></div>
+</header>
+<main>
+  <div class="count" id="count"></div>
+  <div id="list"></div>
+</main>
+<script>
+const DATA=[
+{n:"11",a:"PD",en:"Late Check-in",sv:"Sen incheckning",den:"Late check-in, passengers arriving after deadline.",dsv:"Sen incheckning (efter deadline)."},
+{n:"12",a:"PL",en:"Late Check-in, Congestion",sv:"Trängsel vid incheckning",den:"Congestion in the check-in area.",dsv:"Trängsel i incheckningsområdet."},
+{n:"13",a:"PE",en:"Check-in Error",sv:"Incheckningsfel",den:"Check-in error affecting passengers or baggage.",dsv:"Incheckningsfel (passagerare/bagage)."},
+{n:"14",a:"PO",en:"Oversales",sv:"Överbokning",den:"Oversales or booking errors.",dsv:"Överbokning eller bokningsfel."},
+{n:"15",a:"PH",en:"Boarding",sv:"Ombordstigning",den:"Boarding problems (e.g. missing passenger).",dsv:"Problem vid boarding (saknad passagerare)."},
+{n:"16",a:"PS",en:"Commercial Publicity",sv:"VIP / Press",den:"Commercial publicity, VIPs or passenger convenience.",dsv:"Press, VIP eller passagerarbekvämlighet."},
+{n:"17",a:"PC",en:"Catering Order",sv:"Cateringbeställning",den:"Late or incorrect catering order.",dsv:"Sen/felaktig cateringbeställning."},
+{n:"18",a:"PB",en:"Baggage Processing",sv:"Bagagehantering",den:"Problems with baggage sortation.",dsv:"Problem med bagagesortering."},
+{n:"19",a:"PW",en:"Reduced Mobility",sv:"Nedsatt rörlighet",den:"Delayed handling of passengers with reduced mobility.",dsv:"Försenad hantering av PRM (rullstolspassagerare)."},
+{n:"21",a:"CD",en:"Documentation",sv:"Fraktdokumentation",den:"Errors or delays in cargo documentation.",dsv:"Fel eller försening i fraktdokumentation."},
+{n:"22",a:"CP",en:"Late Positioning",sv:"Sen lastpositionering",den:"Cargo positioned late at the aircraft.",dsv:"Frakten positionerad för sent vid planet."},
+{n:"23",a:"CC",en:"Late Acceptance",sv:"Sen fraktinlämning",den:"Late acceptance of cargo.",dsv:"Sen inlämning av frakt."},
+{n:"24",a:"CI",en:"Inadequate Packing",sv:"Bristfällig paketering",den:"Inadequate or incorrect packing of cargo.",dsv:"Otillräcklig eller felaktig paketering."},
+{n:"25",a:"CO",en:"Oversales",sv:"Överbokning frakt",den:"Oversales of cargo capacity.",dsv:"Överbokning av frakt."},
+{n:"26",a:"CU",en:"Late Preparation in Warehouse",sv:"Sen hantering (terminal)",den:"Late handling in the cargo terminal.",dsv:"Sen hantering i fraktterminalen."},
+{n:"27",a:"CE",en:"Documentation (Mail)",sv:"Dokumentation (post)",den:"Errors in mail documentation.",dsv:"Fel i postdokumentation."},
+{n:"28",a:"CL",en:"Late Positioning (Mail)",sv:"Sen positionering (post)",den:"Late positioning of mail at the aircraft.",dsv:"Sen positionering av post."},
+{n:"29",a:"CA",en:"Late Acceptance (Mail)",sv:"Sen inlämning (post)",den:"Late acceptance of mail.",dsv:"Sen inlämning av post."},
+{n:"31",a:"GD",en:"Aircraft Documentation",sv:"Flygplansdokumentation",den:"Late or incorrect aircraft documentation (e.g. Loadsheet).",dsv:"Sena/felaktiga dokument (t.ex. Loadsheet)."},
+{n:"32",a:"GL",en:"Loading / Unloading",sv:"Lastning / Lossning",den:"Delay in loading or unloading (e.g. bulky items).",dsv:"Försening vid lastning/lossning (skrymmande)."},
+{n:"33",a:"GE",en:"Loading Equipment",sv:"Lastningsutrustning",den:"Lack of or breakdown of loading equipment.",dsv:"Brist på lastningsutrustning (t.ex. loader)."},
+{n:"34",a:"GS",en:"Servicing Equipment",sv:"Serviceutrustning",den:"Lack of or breakdown of servicing equipment (e.g. stairs, GPU).",dsv:"Brist på serviceutrustning (trappor, GPU)."},
+{n:"35",a:"GC",en:"Aircraft Cleaning",sv:"Flygplansstädning",den:"Aircraft cleaning delayed.",dsv:"Flygplansstädning försenad."},
+{n:"36",a:"GF",en:"Fuelling / Defuelling",sv:"Tankning",den:"Fuelling or defuelling delayed.",dsv:"Tankning försenad."},
+{n:"37",a:"GB",en:"Catering",sv:"Catering",den:"Catering delivery delayed.",dsv:"Cateringleverans försenad."},
+{n:"38",a:"GU",en:"ULD",sv:"Lastcontainrar",den:"Lack of or damaged Unit Load Devices.",dsv:"Brist på eller trasiga lastcontainrar."},
+{n:"39",a:"GT",en:"Technical Equipment",sv:"Teknisk utrustning",den:"Lack of technical equipment (e.g. pushback truck).",dsv:"Brist på teknisk utrustning (t.ex. pushback-truck)."},
+{n:"41",a:"TD",en:"Aircraft Defects",sv:"Tekniskt fel",den:"Technical defects on the aircraft.",dsv:"Tekniskt fel på flygplanet."},
+{n:"42",a:"TM",en:"Scheduled Maintenance",sv:"Planerat underhåll",den:"Scheduled maintenance exceeded planned time.",dsv:"Schemalagt underhåll drog ut på tiden."},
+{n:"43",a:"TN",en:"Non-scheduled Maintenance",sv:"Oplanerat underhåll",den:"Non-scheduled maintenance required.",dsv:"Oplanerat underhåll krävdes."},
+{n:"44",a:"TS",en:"Spares and Equipment",sv:"Reservdelar och utrustning",den:"Lack of or defective technical equipment/spares.",dsv:"Brist på/trasig teknisk utrustning eller reservdelar."},
+{n:"45",a:"TA",en:"AOG Spares",sv:"AOG Reservdelar",den:"Waiting for AOG (Aircraft On Ground) spares.",dsv:"Akut väntan på AOG-reservdelar (Aircraft On Ground)."},
+{n:"46",a:"TC",en:"Aircraft Change",sv:"Flygplansbyte",den:"Aircraft change for technical reasons.",dsv:"Byte av flygplan av tekniska skäl."},
+{n:"47",a:"TL",en:"Stand-by Aircraft",sv:"Reservflygplan",den:"Waiting for a scheduled stand-by aircraft.",dsv:"Väntar på planerat reservflygplan."},
+{n:"48",a:"TV",en:"Cabin Configuration",sv:"Kabinkonfiguration",den:"Delay due to cabin reconfiguration (e.g. moving curtains).",dsv:"Försening p.g.a. ombyggnad av kabinen (t.ex. flytta skynken)."},
+{n:"51",a:"DF",en:"Damage During Flight Operations",sv:"Skada under flygning",den:"Damage incurred in the air (e.g. bird strike).",dsv:"Skada i luften (t.ex. fågelkrock, hård landning)."},
+{n:"52",a:"DG",en:"Damage During Ground Operations",sv:"Skada på marken",den:"Damage incurred on the ground (e.g. hit by vehicle).",dsv:"Skada på marken (t.ex. påkörd av fordon)."},
+{n:"55",a:"ED",en:"Departure Control System (DCS)",sv:"Incheckningssystem (DCS)",den:"Failure in check-in/boarding systems.",dsv:"Fel i inchecknings-/boarding-system."},
+{n:"56",a:"EC",en:"Cargo Preparation System",sv:"Fraktsystem",den:"Failure in cargo preparation systems.",dsv:"Fel i fraktsystem/dokumentation."},
+{n:"57",a:"EF",en:"Flight Plans",sv:"Färdplanssystem",den:"Failure in flight planning data systems.",dsv:"Fel i datasystemet för färdplaner."},
+{n:"58",a:"EO",en:"Other Automated Systems",sv:"Övriga IT-system",den:"Other IT system outages (e.g. baggage sorting, FIDS).",dsv:"Andra IT-avbrott (bagagesystem, skärmar)."},
+{n:"61",a:"FP",en:"Flight Plan",sv:"Färdplan",den:"Late flight planning or changes to the flight plan.",dsv:"Sen färdplanering eller ändringar."},
+{n:"62",a:"FF",en:"Operational Requirements",sv:"Operativa krav",den:"Operational requirements (e.g. fuel or load changes).",dsv:"Operativa krav (ex. bränsle- eller laständring)."},
+{n:"63",a:"FT",en:"Late Crew Boarding",sv:"Sen besättning",den:"Late boarding of flight/cabin crew.",dsv:"Flygande besättning anlände sent."},
+{n:"64",a:"FS",en:"Flight Deck Crew Shortage",sv:"Pilotbrist",den:"Shortage of flight deck crew.",dsv:"Brist på piloter."},
+{n:"65",a:"FR",en:"Flight Deck Crew Request",sv:"Begäran från pilot",den:"Special request from flight deck crew.",dsv:"Särskild begäran från pilot."},
+{n:"66",a:"FL",en:"Late Cabin Crew Boarding",sv:"Sen kabinpersonal",den:"Late boarding of cabin crew.",dsv:"Kabinpersonal anlände sent."},
+{n:"67",a:"FC",en:"Cabin Crew Shortage",sv:"Kabinpersonalbrist",den:"Shortage of cabin crew.",dsv:"Brist på kabinpersonal."},
+{n:"68",a:"FA",en:"Cabin Crew Error",sv:"Kabinpersonal (fel/begäran)",den:"Human error by cabin crew or specific request.",dsv:"Mänskligt fel av kabinpersonal eller specifik begäran."},
+{n:"69",a:"FB",en:"Captain Request for Security",sv:"Kapten begär säkerhetskontroll",den:"Captain requests extra security checks.",dsv:"Kaptenen begär extra säkerhetskontroll."},
+{n:"71",a:"WO",en:"Departure Station",sv:"Väder avgång",den:"Bad weather at departure station.",dsv:"Dåligt väder på avgångsflygplatsen."},
+{n:"72",a:"WT",en:"Destination Station",sv:"Väder ankomst",den:"Bad weather at destination station.",dsv:"Dåligt väder på ankomstflygplatsen."},
+{n:"73",a:"WR",en:"En Route or Alternate",sv:"Väder på väg/reserv",den:"Bad weather en route or at alternate station.",dsv:"Dåligt väder på rutten eller reservflygplatsen."},
+{n:"75",a:"WI",en:"De-Icing of Aircraft",sv:"Avisning",den:"De-icing of the aircraft.",dsv:"Avisning av flygplanet."},
+{n:"76",a:"WS",en:"Removal of Snow/Ice/Water/Sand",sv:"Snöröjning",den:"Snow or runway clearance at the airport.",dsv:"Snö-/banröjning på flygplatsen."},
+{n:"77",a:"WG",en:"Ground Handling Impaired",sv:"Påverkad marktjänst (väder)",den:"Ground handling impaired by extreme weather.",dsv:"Marktjänst fördröjd av extremt väder (åska etc)."},
+{n:"81",a:"AT",en:"ATC Restriction, En-route",sv:"ATC-restriktion (rutt)",den:"ATC capacity restrictions en-route.",dsv:"Restriktioner på rutten (kapacitet)."},
+{n:"82",a:"AX",en:"ATC Restriction, Staff/Equipment",sv:"ATC-problem (personal/utrustning)",den:"ATC problems due to staff shortage or equipment failure.",dsv:"Flygledningsproblem (personalbrist, radarfel)."},
+{n:"83",a:"AE",en:"ATC Restriction at Destination",sv:"ATC-restriktion (ankomst)",den:"ATC capacity restrictions at destination.",dsv:"Kapacitetsrestriktion vid ankomstflygplats."},
+{n:"84",a:"AW",en:"ATC Restriction, Weather",sv:"ATC-restriktion (väder)",den:"Weather-related restrictions imposed by ATC.",dsv:"Väderrestriktioner utfärdade av ATC."},
+{n:"85",a:"AS",en:"Mandatory Security",sv:"Säkerhetsåtgärd",den:"Mandatory security measures (e.g. bomb threat).",dsv:"Tvingande säkerhetsåtgärd (bombhot etc)."},
+{n:"86",a:"AG",en:"Immigration, Customs, Health",sv:"Myndigheter",den:"Delays due to immigration, customs, or health authorities.",dsv:"Tull, gränspolis eller hälsomyndigheter."},
+{n:"87",a:"AF",en:"Airport Facilities",sv:"Flygplatsfaciliteter",den:"Failure of airport facilities (e.g. parking, airbridges).",dsv:"Fel på flygplatsanläggning (parkering, bryggor)."},
+{n:"88",a:"AD",en:"Restrictions at Destination",sv:"Restriktioner ankomstflygplats",den:"Destination airport closed or restricted.",dsv:"Ankomstflygplats stängd."},
+{n:"89",a:"AM",en:"Restrictions at Departure",sv:"Restriktioner avgångsflygplats",den:"Departure airport closed or restricted.",dsv:"Avgångsflygplats stängd/begränsad."},
+{n:"91",a:"RL",en:"Load Connection",sv:"Anslutande last",den:"Awaiting connecting passengers, baggage or cargo.",dsv:"Väntar på anslutande passagerare/bagage från annat flyg."},
+{n:"92",a:"RT",en:"Through Flight",sv:"Genomgående flygning",den:"Problems on through flights or transfer check-in.",dsv:"Problem vid genomgående flygning/transfer-incheckning."},
+{n:"93",a:"RA",en:"Aircraft Rotation",sv:"Sen ankomst flygplan",den:"Aircraft arrived late from its previous sector.",dsv:"Flygplanet ankom sent från sin förra destination."},
+{n:"94",a:"RS",en:"Cabin Crew Rotation",sv:"Kabinpersonal rotation",den:"Cabin crew connecting late from another flight.",dsv:"Kabinpersonal ansluter sent från en annan flygning."},
+{n:"95",a:"RC",en:"Crew Rotation",sv:"Pilotrotation",den:"Flight crew connecting late from another flight.",dsv:"Piloter ansluter sent från en annan flygning."},
+{n:"96",a:"RO",en:"Operations Control",sv:"Operationsstyrning",den:"Re-routing ordered by Operations Control.",dsv:"Operationscentralen beordrar routing-ändring."},
+{n:"97",a:"MI",en:"Industrial Action with Own Airline",sv:"Strejk (eget flygbolag)",den:"Industrial action within the airline.",dsv:"Strejk (inom det egna flygbolaget)."},
+{n:"98",a:"MO",en:"Industrial Action Outside Airline",sv:"Strejk (externt)",den:"Industrial action outside the airline (e.g. handlers).",dsv:"Strejk (utanför flygbolaget, t.ex. bagagehanterare)."},
+{n:"99",a:"MX",en:"Other Reason",sv:"Övrig orsak",den:"Other or unspecified reason.",dsv:"Övrig orsak."}
+];
+
+const CATS={
+ "1":{sv:"Passagerare & bagage",en:"Passenger & Baggage",c:"var(--c10)"},
+ "2":{sv:"Frakt & post",en:"Cargo & Mail",c:"var(--c20)"},
+ "3":{sv:"Markhantering",en:"Ramp Handling",c:"var(--c30)"},
+ "4":{sv:"Teknik",en:"Technical",c:"var(--c40)"},
+ "5":{sv:"Skador & systemfel",en:"Damage & Systems",c:"var(--c50)"},
+ "6":{sv:"Flygoperationer & besättning",en:"Flight Ops & Crew",c:"var(--c60)"},
+ "7":{sv:"Väder",en:"Weather",c:"var(--c70)"},
+ "8":{sv:"ATC & flygplats",en:"ATC & Airport",c:"var(--c80)"},
+ "9":{sv:"Övrigt / Rotation",en:"Misc / Reactionary",c:"var(--c90)"}
+};
+
+const T={
+ sv:{all:"Alla",search:"Sök kod, ord eller orsak…",hits:n=>n+" av "+DATA.length+" koder",
+     none:"Inga träffar",tryagain:"Prova ett annat sökord eller rensa filtret.",
+     other:"English",copy:"Kopiera kod",copied:"Kopierad!"},
+ en:{all:"All",search:"Search code, word or reason…",hits:n=>n+" of "+DATA.length+" codes",
+     none:"No matches",tryagain:"Try another search term or clear the filter.",
+     other:"Svenska",copy:"Copy code",copied:"Copied!"}
+};
+
+let lang=localStorage.getItem("dc-lang")||"sv";
+let cat=localStorage.getItem("dc-cat")||"";
+let query="";
+let openGroups=new Set();   // utfällda kategorier
+let allOpen=false;          // "Alla"-läge: allt utfällt
+
+const norm=s=>s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"");
+const esc=s=>s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+function hl(text,q){
+  if(!q) return esc(text);
+  const nt=norm(text), nq=norm(q), i=nt.indexOf(nq);
+  if(i<0) return esc(text);
+  return esc(text.slice(0,i))+"<mark>"+esc(text.slice(i,i+q.length))+"</mark>"+esc(text.slice(i+q.length));
+}
+
+function score(item,q){
+  if(!q) return 1;
+  const nq=norm(q);
+  if(item.n===nq) return 1000;
+  if(item.n.startsWith(nq)) return 900;
+  if(norm(item.a)===nq) return 850;
+  const t1=norm(item[lang]), t2=norm(lang==="sv"?item.en:item.sv);
+  const d1=norm(lang==="sv"?item.dsv:item.den), d2=norm(lang==="sv"?item.den:item.dsv);
+  if(t1.startsWith(nq)) return 700;
+  if(t1.includes(nq)) return 600;
+  if(t2.includes(nq)) return 500;
+  if(d1.includes(nq)) return 400;
+  if(d2.includes(nq)) return 300;
+  // all words must appear somewhere
+  const hay=item.n+" "+norm(item.a)+" "+t1+" "+t2+" "+d1+" "+d2;
+  const words=nq.split(/\s+/).filter(Boolean);
+  if(words.length>1 && words.every(w=>hay.includes(w))) return 200;
+  return 0;
+}
+
+function render(){
+  const t=T[lang];
+  document.getElementById("q").placeholder=t.search;
+  document.getElementById("lang-sv").className=lang==="sv"?"on":"";
+  document.getElementById("lang-en").className=lang==="en"?"on":"";
+
+  // chips
+  const chips=[`<button class="chip ${cat===""&&allOpen?"on":""}" data-cat="">${t.all}</button>`];
+  for(const d of Object.keys(CATS)){
+    const c=CATS[d];
+    chips.push(`<button class="chip ${cat===d?"on":""}" data-cat="${d}">
+      <span class="dot" style="background:${c.c}"></span>${d}0–${d}9 · ${c[lang]}</button>`);
+  }
+  document.getElementById("chips").innerHTML=chips.join("");
+
+  // filter + rank
+  let items=DATA.filter(it=>!cat||it.n[0]===cat);
+  if(query){
+    items=items.map(it=>({it,s:score(it,query)})).filter(x=>x.s>0)
+      .sort((a,b)=>b.s-a.s||a.it.n.localeCompare(b.it.n)).map(x=>x.it);
+  }
+  document.getElementById("count").textContent=t.hits(items.length);
+
+  const list=document.getElementById("list");
+  if(!items.length){
+    list.innerHTML=`<div class="empty"><div class="big">🔍</div><div><b>${t.none}</b></div><div>${t.tryagain}</div></div>`;
+    return;
+  }
+
+  const cardHtml=it=>{
+    const c=CATS[it.n[0]];
+    const name=lang==="sv"?it.sv:it.en;
+    const desc=lang==="sv"?it.dsv:it.den;
+    const oName=lang==="sv"?it.en:it.sv;
+    const oDesc=lang==="sv"?it.den:it.dsv;
+    return `<div class="card" data-code="${it.n}">
+      <div class="row">
+        <div class="codebox"><div class="num" style="color:${c.c}">${hl(it.n,query)}</div><div class="alpha">${hl(it.a,query)}</div></div>
+        <div class="info">
+          <div class="name">${hl(name,query)}</div>
+          <div class="desc">${hl(desc,query)}</div>
+        </div>
+      </div>
+      <div class="detail">
+        <div class="lbl">${lang==="sv"?"English":"Svenska"}</div>
+        <div>${esc(oName)}</div>
+        <div class="other">${esc(oDesc)}</div>
+        <button class="copy" data-copy="${it.n}">${t.copy} ${it.n}</button>
+      </div>
+    </div>`;
+  };
+
+  let html="";
+  if(query){
+    // sökläge: platt, rankad lista
+    html=items.map(cardHtml).join("");
+  }else{
+    // kategoriläge: hopfällbara grupper
+    for(const g of Object.keys(CATS)){
+      if(cat && g!==cat) continue;
+      const c=CATS[g];
+      const groupItems=items.filter(it=>it.n[0]===g);
+      if(!groupItems.length) continue;
+      const isOpen=allOpen||openGroups.has(g)||cat===g;
+      html+=`<div class="grouphead ${isOpen?"open":""}" data-group="${g}">
+        <span class="dot" style="background:${c.c}"></span>
+        <span class="range" style="color:${c.c}">${g}0–${g}9</span>
+        <span class="gname">${c[lang]}</span>
+        <span class="cnt">${groupItems.length}</span>
+        <svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m9 5 7 7-7 7"/></svg>
+      </div>
+      <div class="groupbody ${isOpen?"open":""}">${groupItems.map(cardHtml).join("")}</div>`;
+    }
+  }
+  list.innerHTML=html;
+}
+
+// events
+const q=document.getElementById("q"), clearBtn=document.getElementById("clear");
+q.addEventListener("input",()=>{query=q.value.trim();clearBtn.style.display=query?"block":"none";render();});
+clearBtn.addEventListener("click",()=>{q.value="";query="";clearBtn.style.display="none";render();q.focus();});
+document.getElementById("chips").addEventListener("click",e=>{
+  const b=e.target.closest(".chip"); if(!b) return;
+  if(b.dataset.cat===""){
+    // "Alla": växla mellan allt utfällt och bara huvudkategorier
+    allOpen=!allOpen; cat=""; if(!allOpen) openGroups.clear();
+  }else{
+    cat=b.dataset.cat===cat?"":b.dataset.cat; // tryck igen = avmarkera
+    allOpen=false; openGroups.clear();
+  }
+  localStorage.setItem("dc-cat",cat); render();
+});
+document.getElementById("lang-sv").addEventListener("click",()=>{lang="sv";localStorage.setItem("dc-lang",lang);render();});
+document.getElementById("lang-en").addEventListener("click",()=>{lang="en";localStorage.setItem("dc-lang",lang);render();});
+document.getElementById("list").addEventListener("click",e=>{
+  const cp=e.target.closest(".copy");
+  if(cp){
+    navigator.clipboard&&navigator.clipboard.writeText(cp.dataset.copy);
+    cp.textContent=T[lang].copied;
+    setTimeout(()=>render(),900);
+    e.stopPropagation(); return;
+  }
+  const gh=e.target.closest(".grouphead");
+  if(gh){
+    const g=gh.dataset.group;
+    if(allOpen){ // i "Alla"-läge: fäll ihop just denna
+      allOpen=false;
+      for(const k of Object.keys(CATS)) if(k!==g) openGroups.add(k);
+    }else if(openGroups.has(g)) openGroups.delete(g);
+    else openGroups.add(g);
+    render(); return;
+  }
+  const card=e.target.closest(".card");
+  if(card) card.classList.toggle("open");
+});
+
+render();
+
+// offline
+if("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js");
+</script>
+</body>
+</html>
