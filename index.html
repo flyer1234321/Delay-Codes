@@ -7,7 +7,8 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Delay Codes">
-<meta name="theme-color" content="#0b1220">
+<meta name="theme-color" content="#0b1220" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#f4f6fa" media="(prefers-color-scheme: light)">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icon-180.png">
 <title>IATA Delay Codes</title>
@@ -17,12 +18,22 @@
   --text:#e8edf6; --dim:#8fa0bc; --accent:#4da3ff; --chipbg:#16203a;
   --c10:#4da3ff; --c20:#b58cff; --c30:#ffb347; --c40:#ff6b6b; --c50:#ff8fa3;
   --c60:#5ad1b0; --c70:#7fc8ff; --c80:#ffd166; --c90:#c0cad9;
+  --headerbg:rgba(11,18,32,.92);
+}
+@media (prefers-color-scheme: light){
+  :root{
+    --bg:#f4f6fa; --card:#ffffff; --card2:#eef2f8; --border:#d7deea;
+    --text:#17233a; --dim:#5d6b85; --accent:#1f6fd6; --chipbg:#e7edf6;
+    --c10:#1f6fd6; --c20:#7a4fd1; --c30:#c77e12; --c40:#d43f3f; --c50:#d1547a;
+    --c60:#128a6b; --c70:#2589c9; --c80:#b8860b; --c90:#5d6b85;
+    --headerbg:rgba(244,246,250,.92);
+  }
 }
 *{box-sizing:border-box; -webkit-tap-highlight-color:transparent}
 html,body{margin:0;padding:0;background:var(--bg);color:var(--text);
   font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,sans-serif;
   height:100%; overscroll-behavior-y:none}
-header{position:sticky;top:0;z-index:10;background:rgba(11,18,32,.92);
+header{position:sticky;top:0;z-index:10;background:var(--headerbg);
   -webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);
   padding:calc(env(safe-area-inset-top) + 10px) 14px 8px;border-bottom:1px solid var(--border)}
 .titlebar{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
@@ -30,7 +41,7 @@ h1{font-size:17px;margin:0;font-weight:700;letter-spacing:.3px;display:flex;alig
 h1 svg{flex:none}
 .lang{display:flex;border:1px solid var(--border);border-radius:9px;overflow:hidden;font-size:13px;font-weight:600}
 .lang button{background:transparent;color:var(--dim);border:0;padding:6px 12px;font:inherit;cursor:pointer}
-.lang button.on{background:var(--accent);color:#08101f}
+.lang button.on{background:var(--accent);color:var(--bg)}
 .searchwrap{position:relative}
 #q{width:100%;padding:12px 40px 12px 40px;font-size:17px;border-radius:12px;
   border:1px solid var(--border);background:var(--card);color:var(--text);outline:none}
@@ -45,8 +56,8 @@ h1 svg{flex:none}
   border-radius:999px;padding:7px 13px;font-size:13px;font-weight:600;cursor:pointer;
   display:flex;align-items:center;gap:6px;white-space:nowrap}
 .chip .dot{width:8px;height:8px;border-radius:50%;background:var(--dim)}
-.chip.on{background:var(--accent);border-color:var(--accent);color:#08101f}
-.chip.on .dot{background:#08101f}
+.chip.on{background:var(--accent);border-color:var(--accent);color:var(--bg)}
+.chip.on .dot{background:var(--bg)}
 main{padding:10px 14px calc(env(safe-area-inset-bottom) + 30px);max-width:640px;margin:0 auto}
 .count{font-size:12px;color:var(--dim);margin:6px 2px 10px}
 .grouphead{background:var(--card2);border:1px solid var(--border);border-radius:14px;
@@ -60,7 +71,12 @@ main{padding:10px 14px calc(env(safe-area-inset-bottom) + 30px);max-width:640px;
 .grouphead .chev{flex:none;color:var(--dim);transition:transform .18s}
 .grouphead.open .chev{transform:rotate(90deg)}
 .groupbody{display:none}
-.groupbody.open{display:block}
+.groupbody.open{display:block;animation:slide .18s ease-out}
+@keyframes slide{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+.toolbar{display:flex;align-items:center;justify-content:space-between;margin:6px 2px 4px}
+#toggleall{background:transparent;border:0;color:var(--accent);font:inherit;font-size:13px;font-weight:600;cursor:pointer;padding:4px 2px}
+footer{max-width:640px;margin:26px auto 0;padding:0 16px calc(env(safe-area-inset-bottom) + 24px);
+  text-align:center;font-size:11.5px;color:var(--dim);line-height:1.5}
 .card{background:var(--card);border:1px solid var(--border);border-radius:14px;
   padding:12px 14px;margin-bottom:8px;cursor:pointer;transition:background .15s}
 .card:active{background:var(--card2)}
@@ -93,15 +109,19 @@ mark{background:transparent;color:var(--accent);font-weight:700}
   </div>
   <div class="searchwrap">
     <svg class="mag" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
-    <input id="q" type="search" autocomplete="off" autocorrect="off" spellcheck="false" placeholder="Sök kod, ord eller orsak…">
+    <input id="q" type="search" enterkeyhint="search" autocomplete="off" autocorrect="off" spellcheck="false" placeholder="Sök kod, ord eller orsak…" aria-label="Sök delay code">
     <button id="clear" aria-label="Rensa">✕</button>
   </div>
   <div class="chips" id="chips"></div>
 </header>
 <main>
-  <div class="count" id="count"></div>
+  <div class="toolbar">
+    <div class="count" id="count"></div>
+    <button id="toggleall"></button>
+  </div>
   <div id="list"></div>
 </main>
+<footer id="foot"></footer>
 <script>
 const DATA=[
 {n:"11",a:"PD",en:"Late Check-in",sv:"Sen incheckning",den:"Late check-in, passengers arriving after deadline.",dsv:"Sen incheckning (efter deadline)."},
@@ -195,17 +215,20 @@ const CATS={
 const T={
  sv:{all:"Alla",search:"Sök kod, ord eller orsak…",hits:n=>n+" av "+DATA.length+" koder",
      none:"Inga träffar",tryagain:"Prova ett annat sökord eller rensa filtret.",
-     other:"English",copy:"Kopiera kod",copied:"Kopierad!"},
+     other:"English",copy:"Kopiera kod",copied:"Kopierad!",
+     expand:"Fäll ut alla",collapse:"Fäll ihop alla",
+     foot:"IATA Delay Codes (AHM 730) · Fungerar offline · Data lagras endast på din enhet"},
  en:{all:"All",search:"Search code, word or reason…",hits:n=>n+" of "+DATA.length+" codes",
      none:"No matches",tryagain:"Try another search term or clear the filter.",
-     other:"Svenska",copy:"Copy code",copied:"Copied!"}
+     other:"Svenska",copy:"Copy code",copied:"Copied!",
+     expand:"Expand all",collapse:"Collapse all",
+     foot:"IATA Delay Codes (AHM 730) · Works offline · Data stays on your device"}
 };
 
 let lang=localStorage.getItem("dc-lang")||"sv";
-let cat=localStorage.getItem("dc-cat")||"";
+let cats=new Set(JSON.parse(localStorage.getItem("dc-cats")||"[]")); // valda kategorier (tomt = alla)
 let query="";
-let openGroups=new Set();   // utfällda kategorier
-let allOpen=false;          // "Alla"-läge: allt utfällt
+let openGroups=new Set();   // utfällda kategorier (styrs bara av listan)
 
 const norm=s=>s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"");
 const esc=s=>s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
@@ -243,22 +266,29 @@ function render(){
   document.getElementById("lang-sv").className=lang==="sv"?"on":"";
   document.getElementById("lang-en").className=lang==="en"?"on":"";
 
-  // chips
-  const chips=[`<button class="chip ${cat===""&&allOpen?"on":""}" data-cat="">${t.all}</button>`];
+  // chips = filter: styr vilka kategorier som visas nedanför
+  const chips=[`<button class="chip ${cats.size===0?"on":""}" data-cat="">${t.all}</button>`];
   for(const d of Object.keys(CATS)){
     const c=CATS[d];
-    chips.push(`<button class="chip ${cat===d?"on":""}" data-cat="${d}">
+    chips.push(`<button class="chip ${cats.has(d)?"on":""}" data-cat="${d}">
       <span class="dot" style="background:${c.c}"></span>${d}0–${d}9 · ${c[lang]}</button>`);
   }
   document.getElementById("chips").innerHTML=chips.join("");
 
   // filter + rank
-  let items=DATA.filter(it=>!cat||it.n[0]===cat);
+  let items=DATA.filter(it=>cats.size===0||cats.has(it.n[0]));
   if(query){
     items=items.map(it=>({it,s:score(it,query)})).filter(x=>x.s>0)
       .sort((a,b)=>b.s-a.s||a.it.n.localeCompare(b.it.n)).map(x=>x.it);
   }
   document.getElementById("count").textContent=t.hits(items.length);
+  document.getElementById("foot").textContent=t.foot;
+  const visible=Object.keys(CATS).filter(g=>(!cats.size||cats.has(g))&&items.some(it=>it.n[0]===g));
+  const allExpanded=visible.length>0&&visible.every(g=>openGroups.has(g));
+  const ta=document.getElementById("toggleall");
+  ta.style.display=query?"none":"block";
+  ta.textContent=allExpanded?t.collapse:t.expand;
+  ta.dataset.mode=allExpanded?"collapse":"expand";
 
   const list=document.getElementById("list");
   if(!items.length){
@@ -296,11 +326,11 @@ function render(){
   }else{
     // kategoriläge: hopfällbara grupper
     for(const g of Object.keys(CATS)){
-      if(cat && g!==cat) continue;
+      if(cats.size&&!cats.has(g)) continue;
       const c=CATS[g];
       const groupItems=items.filter(it=>it.n[0]===g);
       if(!groupItems.length) continue;
-      const isOpen=allOpen||openGroups.has(g)||cat===g;
+      const isOpen=openGroups.has(g);
       html+=`<div class="grouphead ${isOpen?"open":""}" data-group="${g}">
         <span class="dot" style="background:${c.c}"></span>
         <span class="range" style="color:${c.c}">${g}0–${g}9</span>
@@ -317,17 +347,23 @@ function render(){
 // events
 const q=document.getElementById("q"), clearBtn=document.getElementById("clear");
 q.addEventListener("input",()=>{query=q.value.trim();clearBtn.style.display=query?"block":"none";render();});
+q.addEventListener("keydown",e=>{if(e.key==="Enter")q.blur();}); // stäng tangentbordet
+document.getElementById("toggleall").addEventListener("click",e=>{
+  if(e.target.dataset.mode==="collapse") openGroups.clear();
+  else for(const g of Object.keys(CATS)) openGroups.add(g);
+  render();
+});
 clearBtn.addEventListener("click",()=>{q.value="";query="";clearBtn.style.display="none";render();q.focus();});
 document.getElementById("chips").addEventListener("click",e=>{
   const b=e.target.closest(".chip"); if(!b) return;
   if(b.dataset.cat===""){
-    // "Alla": växla mellan allt utfällt och bara huvudkategorier
-    allOpen=!allOpen; cat=""; if(!allOpen) openGroups.clear();
+    cats.clear(); // "Alla" = visa alla kategorier
   }else{
-    cat=b.dataset.cat===cat?"":b.dataset.cat; // tryck igen = avmarkera
-    allOpen=false; openGroups.clear();
+    // flerval: tryck för att visa/dölja en kategori nedanför
+    if(cats.has(b.dataset.cat)) cats.delete(b.dataset.cat);
+    else cats.add(b.dataset.cat);
   }
-  localStorage.setItem("dc-cat",cat); render();
+  localStorage.setItem("dc-cats",JSON.stringify([...cats])); render();
 });
 document.getElementById("lang-sv").addEventListener("click",()=>{lang="sv";localStorage.setItem("dc-lang",lang);render();});
 document.getElementById("lang-en").addEventListener("click",()=>{lang="en";localStorage.setItem("dc-lang",lang);render();});
@@ -342,11 +378,7 @@ document.getElementById("list").addEventListener("click",e=>{
   const gh=e.target.closest(".grouphead");
   if(gh){
     const g=gh.dataset.group;
-    if(allOpen){ // i "Alla"-läge: fäll ihop just denna
-      allOpen=false;
-      for(const k of Object.keys(CATS)) if(k!==g) openGroups.add(k);
-    }else if(openGroups.has(g)) openGroups.delete(g);
-    else openGroups.add(g);
+    if(openGroups.has(g)) openGroups.delete(g); else openGroups.add(g);
     render(); return;
   }
   const card=e.target.closest(".card");
