@@ -88,11 +88,11 @@ footer{max-width:640px;margin:26px auto 0;padding:0 16px calc(env(safe-area-inse
 .name{font-size:15px;font-weight:650;line-height:1.25}
 .desc{font-size:13px;color:var(--dim);margin-top:2px;line-height:1.35}
 mark{background:transparent;color:var(--accent);font-weight:700}
-.detail{display:none;margin-top:10px;padding-top:10px;border-top:1px solid var(--border);font-size:13.5px;line-height:1.45}
+.detail{display:none;margin-top:10px;padding-top:10px;border-top:1px solid var(--border);font-size:13px;line-height:1.45}
 .card.open .detail{display:block}
-.detail .lbl{font-size:11px;font-weight:700;color:var(--dim);text-transform:uppercase;letter-spacing:.7px;margin-bottom:2px}
-.detail .other{color:var(--dim);margin-top:8px}
-.copy{margin-top:10px;background:var(--chipbg);border:1px solid var(--border);color:var(--accent);
+.detail .lbl{font-size:10.5px;font-weight:700;color:var(--dim);text-transform:uppercase;letter-spacing:.7px;margin-bottom:3px}
+.detail .formal{color:var(--text)}
+.copy{margin-top:6px;background:var(--chipbg);border:1px solid var(--border);color:var(--accent);
   font:inherit;font-size:13px;font-weight:600;padding:7px 14px;border-radius:9px;cursor:pointer}
 .copy:active{background:var(--border)}
 .empty{text-align:center;color:var(--dim);padding:50px 20px;font-size:15px}
@@ -124,83 +124,86 @@ mark{background:transparent;color:var(--accent);font-weight:700}
 <footer id="foot"></footer>
 <script>
 const DATA=[
-{n:"11",a:"PD",en:"Late Check-in",sv:"Sen incheckning",den:"Late check-in, passengers arriving after deadline.",dsv:"Sen incheckning (efter deadline)."},
-{n:"12",a:"PL",en:"Late Check-in, Congestion",sv:"Trängsel vid incheckning",den:"Congestion in the check-in area.",dsv:"Trängsel i incheckningsområdet."},
-{n:"13",a:"PE",en:"Check-in Error",sv:"Incheckningsfel",den:"Check-in error affecting passengers or baggage.",dsv:"Incheckningsfel (passagerare/bagage)."},
-{n:"14",a:"PO",en:"Oversales",sv:"Överbokning",den:"Oversales or booking errors.",dsv:"Överbokning eller bokningsfel."},
-{n:"15",a:"PH",en:"Boarding",sv:"Ombordstigning",den:"Boarding problems (e.g. missing passenger).",dsv:"Problem vid boarding (saknad passagerare)."},
-{n:"16",a:"PS",en:"Commercial Publicity",sv:"VIP / Press",den:"Commercial publicity, VIPs or passenger convenience.",dsv:"Press, VIP eller passagerarbekvämlighet."},
-{n:"17",a:"PC",en:"Catering Order",sv:"Cateringbeställning",den:"Late or incorrect catering order.",dsv:"Sen/felaktig cateringbeställning."},
-{n:"18",a:"PB",en:"Baggage Processing",sv:"Bagagehantering",den:"Problems with baggage sortation.",dsv:"Problem med bagagesortering."},
-{n:"19",a:"PW",en:"Reduced Mobility",sv:"Nedsatt rörlighet",den:"Delayed handling of passengers with reduced mobility.",dsv:"Försenad hantering av PRM (rullstolspassagerare)."},
-{n:"21",a:"CD",en:"Documentation",sv:"Fraktdokumentation",den:"Errors or delays in cargo documentation.",dsv:"Fel eller försening i fraktdokumentation."},
-{n:"22",a:"CP",en:"Late Positioning",sv:"Sen lastpositionering",den:"Cargo positioned late at the aircraft.",dsv:"Frakten positionerad för sent vid planet."},
-{n:"23",a:"CC",en:"Late Acceptance",sv:"Sen fraktinlämning",den:"Late acceptance of cargo.",dsv:"Sen inlämning av frakt."},
-{n:"24",a:"CI",en:"Inadequate Packing",sv:"Bristfällig paketering",den:"Inadequate or incorrect packing of cargo.",dsv:"Otillräcklig eller felaktig paketering."},
-{n:"25",a:"CO",en:"Oversales",sv:"Överbokning frakt",den:"Oversales of cargo capacity.",dsv:"Överbokning av frakt."},
-{n:"26",a:"CU",en:"Late Preparation in Warehouse",sv:"Sen hantering (terminal)",den:"Late handling in the cargo terminal.",dsv:"Sen hantering i fraktterminalen."},
-{n:"27",a:"CE",en:"Documentation (Mail)",sv:"Dokumentation (post)",den:"Errors in mail documentation.",dsv:"Fel i postdokumentation."},
-{n:"28",a:"CL",en:"Late Positioning (Mail)",sv:"Sen positionering (post)",den:"Late positioning of mail at the aircraft.",dsv:"Sen positionering av post."},
-{n:"29",a:"CA",en:"Late Acceptance (Mail)",sv:"Sen inlämning (post)",den:"Late acceptance of mail.",dsv:"Sen inlämning av post."},
-{n:"31",a:"GD",en:"Aircraft Documentation",sv:"Flygplansdokumentation",den:"Late or incorrect aircraft documentation (e.g. Loadsheet).",dsv:"Sena/felaktiga dokument (t.ex. Loadsheet)."},
-{n:"32",a:"GL",en:"Loading / Unloading",sv:"Lastning / Lossning",den:"Delay in loading or unloading (e.g. bulky items).",dsv:"Försening vid lastning/lossning (skrymmande)."},
-{n:"33",a:"GE",en:"Loading Equipment",sv:"Lastningsutrustning",den:"Lack of or breakdown of loading equipment.",dsv:"Brist på lastningsutrustning (t.ex. loader)."},
-{n:"34",a:"GS",en:"Servicing Equipment",sv:"Serviceutrustning",den:"Lack of or breakdown of servicing equipment (e.g. stairs, GPU).",dsv:"Brist på serviceutrustning (trappor, GPU)."},
-{n:"35",a:"GC",en:"Aircraft Cleaning",sv:"Flygplansstädning",den:"Aircraft cleaning delayed.",dsv:"Flygplansstädning försenad."},
-{n:"36",a:"GF",en:"Fuelling / Defuelling",sv:"Tankning",den:"Fuelling or defuelling delayed.",dsv:"Tankning försenad."},
-{n:"37",a:"GB",en:"Catering",sv:"Catering",den:"Catering delivery delayed.",dsv:"Cateringleverans försenad."},
-{n:"38",a:"GU",en:"ULD",sv:"Lastcontainrar",den:"Lack of or damaged Unit Load Devices.",dsv:"Brist på eller trasiga lastcontainrar."},
-{n:"39",a:"GT",en:"Technical Equipment",sv:"Teknisk utrustning",den:"Lack of technical equipment (e.g. pushback truck).",dsv:"Brist på teknisk utrustning (t.ex. pushback-truck)."},
-{n:"41",a:"TD",en:"Aircraft Defects",sv:"Tekniskt fel",den:"Technical defects on the aircraft.",dsv:"Tekniskt fel på flygplanet."},
-{n:"42",a:"TM",en:"Scheduled Maintenance",sv:"Planerat underhåll",den:"Scheduled maintenance exceeded planned time.",dsv:"Schemalagt underhåll drog ut på tiden."},
-{n:"43",a:"TN",en:"Non-scheduled Maintenance",sv:"Oplanerat underhåll",den:"Non-scheduled maintenance required.",dsv:"Oplanerat underhåll krävdes."},
-{n:"44",a:"TS",en:"Spares and Equipment",sv:"Reservdelar och utrustning",den:"Lack of or defective technical equipment/spares.",dsv:"Brist på/trasig teknisk utrustning eller reservdelar."},
-{n:"45",a:"TA",en:"AOG Spares",sv:"AOG Reservdelar",den:"Waiting for AOG (Aircraft On Ground) spares.",dsv:"Akut väntan på AOG-reservdelar (Aircraft On Ground)."},
-{n:"46",a:"TC",en:"Aircraft Change",sv:"Flygplansbyte",den:"Aircraft change for technical reasons.",dsv:"Byte av flygplan av tekniska skäl."},
-{n:"47",a:"TL",en:"Stand-by Aircraft",sv:"Reservflygplan",den:"Waiting for a scheduled stand-by aircraft.",dsv:"Väntar på planerat reservflygplan."},
-{n:"48",a:"TV",en:"Cabin Configuration",sv:"Kabinkonfiguration",den:"Delay due to cabin reconfiguration (e.g. moving curtains).",dsv:"Försening p.g.a. ombyggnad av kabinen (t.ex. flytta skynken)."},
-{n:"51",a:"DF",en:"Damage During Flight Operations",sv:"Skada under flygning",den:"Damage incurred in the air (e.g. bird strike).",dsv:"Skada i luften (t.ex. fågelkrock, hård landning)."},
-{n:"52",a:"DG",en:"Damage During Ground Operations",sv:"Skada på marken",den:"Damage incurred on the ground (e.g. hit by vehicle).",dsv:"Skada på marken (t.ex. påkörd av fordon)."},
-{n:"55",a:"ED",en:"Departure Control System (DCS)",sv:"Incheckningssystem (DCS)",den:"Failure in check-in/boarding systems.",dsv:"Fel i inchecknings-/boarding-system."},
-{n:"56",a:"EC",en:"Cargo Preparation System",sv:"Fraktsystem",den:"Failure in cargo preparation systems.",dsv:"Fel i fraktsystem/dokumentation."},
-{n:"57",a:"EF",en:"Flight Plans",sv:"Färdplanssystem",den:"Failure in flight planning data systems.",dsv:"Fel i datasystemet för färdplaner."},
-{n:"58",a:"EO",en:"Other Automated Systems",sv:"Övriga IT-system",den:"Other IT system outages (e.g. baggage sorting, FIDS).",dsv:"Andra IT-avbrott (bagagesystem, skärmar)."},
-{n:"61",a:"FP",en:"Flight Plan",sv:"Färdplan",den:"Late flight planning or changes to the flight plan.",dsv:"Sen färdplanering eller ändringar."},
-{n:"62",a:"FF",en:"Operational Requirements",sv:"Operativa krav",den:"Operational requirements (e.g. fuel or load changes).",dsv:"Operativa krav (ex. bränsle- eller laständring)."},
-{n:"63",a:"FT",en:"Late Crew Boarding",sv:"Sen besättning",den:"Late boarding of flight/cabin crew.",dsv:"Flygande besättning anlände sent."},
-{n:"64",a:"FS",en:"Flight Deck Crew Shortage",sv:"Pilotbrist",den:"Shortage of flight deck crew.",dsv:"Brist på piloter."},
-{n:"65",a:"FR",en:"Flight Deck Crew Request",sv:"Begäran från pilot",den:"Special request from flight deck crew.",dsv:"Särskild begäran från pilot."},
-{n:"66",a:"FL",en:"Late Cabin Crew Boarding",sv:"Sen kabinpersonal",den:"Late boarding of cabin crew.",dsv:"Kabinpersonal anlände sent."},
-{n:"67",a:"FC",en:"Cabin Crew Shortage",sv:"Kabinpersonalbrist",den:"Shortage of cabin crew.",dsv:"Brist på kabinpersonal."},
-{n:"68",a:"FA",en:"Cabin Crew Error",sv:"Kabinpersonal (fel/begäran)",den:"Human error by cabin crew or specific request.",dsv:"Mänskligt fel av kabinpersonal eller specifik begäran."},
-{n:"69",a:"FB",en:"Captain Request for Security",sv:"Kapten begär säkerhetskontroll",den:"Captain requests extra security checks.",dsv:"Kaptenen begär extra säkerhetskontroll."},
-{n:"71",a:"WO",en:"Departure Station",sv:"Väder avgång",den:"Bad weather at departure station.",dsv:"Dåligt väder på avgångsflygplatsen."},
-{n:"72",a:"WT",en:"Destination Station",sv:"Väder ankomst",den:"Bad weather at destination station.",dsv:"Dåligt väder på ankomstflygplatsen."},
-{n:"73",a:"WR",en:"En Route or Alternate",sv:"Väder på väg/reserv",den:"Bad weather en route or at alternate station.",dsv:"Dåligt väder på rutten eller reservflygplatsen."},
-{n:"75",a:"WI",en:"De-Icing of Aircraft",sv:"Avisning",den:"De-icing of the aircraft.",dsv:"Avisning av flygplanet."},
-{n:"76",a:"WS",en:"Removal of Snow/Ice/Water/Sand",sv:"Snöröjning",den:"Snow or runway clearance at the airport.",dsv:"Snö-/banröjning på flygplatsen."},
-{n:"77",a:"WG",en:"Ground Handling Impaired",sv:"Påverkad marktjänst (väder)",den:"Ground handling impaired by extreme weather.",dsv:"Marktjänst fördröjd av extremt väder (åska etc)."},
-{n:"81",a:"AT",en:"ATC Restriction, En-route",sv:"ATC-restriktion (rutt)",den:"ATC capacity restrictions en-route.",dsv:"Restriktioner på rutten (kapacitet)."},
-{n:"82",a:"AX",en:"ATC Restriction, Staff/Equipment",sv:"ATC-problem (personal/utrustning)",den:"ATC problems due to staff shortage or equipment failure.",dsv:"Flygledningsproblem (personalbrist, radarfel)."},
-{n:"83",a:"AE",en:"ATC Restriction at Destination",sv:"ATC-restriktion (ankomst)",den:"ATC capacity restrictions at destination.",dsv:"Kapacitetsrestriktion vid ankomstflygplats."},
-{n:"84",a:"AW",en:"ATC Restriction, Weather",sv:"ATC-restriktion (väder)",den:"Weather-related restrictions imposed by ATC.",dsv:"Väderrestriktioner utfärdade av ATC."},
-{n:"85",a:"AS",en:"Mandatory Security",sv:"Säkerhetsåtgärd",den:"Mandatory security measures (e.g. bomb threat).",dsv:"Tvingande säkerhetsåtgärd (bombhot etc)."},
-{n:"86",a:"AG",en:"Immigration, Customs, Health",sv:"Myndigheter",den:"Delays due to immigration, customs, or health authorities.",dsv:"Tull, gränspolis eller hälsomyndigheter."},
-{n:"87",a:"AF",en:"Airport Facilities",sv:"Flygplatsfaciliteter",den:"Failure of airport facilities (e.g. parking, airbridges).",dsv:"Fel på flygplatsanläggning (parkering, bryggor)."},
-{n:"88",a:"AD",en:"Restrictions at Destination",sv:"Restriktioner ankomstflygplats",den:"Destination airport closed or restricted.",dsv:"Ankomstflygplats stängd."},
-{n:"89",a:"AM",en:"Restrictions at Departure",sv:"Restriktioner avgångsflygplats",den:"Departure airport closed or restricted.",dsv:"Avgångsflygplats stängd/begränsad."},
-{n:"91",a:"RL",en:"Load Connection",sv:"Anslutande last",den:"Awaiting connecting passengers, baggage or cargo.",dsv:"Väntar på anslutande passagerare/bagage från annat flyg."},
-{n:"92",a:"RT",en:"Through Flight",sv:"Genomgående flygning",den:"Problems on through flights or transfer check-in.",dsv:"Problem vid genomgående flygning/transfer-incheckning."},
-{n:"93",a:"RA",en:"Aircraft Rotation",sv:"Sen ankomst flygplan",den:"Aircraft arrived late from its previous sector.",dsv:"Flygplanet ankom sent från sin förra destination."},
-{n:"94",a:"RS",en:"Cabin Crew Rotation",sv:"Kabinpersonal rotation",den:"Cabin crew connecting late from another flight.",dsv:"Kabinpersonal ansluter sent från en annan flygning."},
-{n:"95",a:"RC",en:"Crew Rotation",sv:"Pilotrotation",den:"Flight crew connecting late from another flight.",dsv:"Piloter ansluter sent från en annan flygning."},
-{n:"96",a:"RO",en:"Operations Control",sv:"Operationsstyrning",den:"Re-routing ordered by Operations Control.",dsv:"Operationscentralen beordrar routing-ändring."},
-{n:"97",a:"MI",en:"Industrial Action with Own Airline",sv:"Strejk (eget flygbolag)",den:"Industrial action within the airline.",dsv:"Strejk (inom det egna flygbolaget)."},
-{n:"98",a:"MO",en:"Industrial Action Outside Airline",sv:"Strejk (externt)",den:"Industrial action outside the airline (e.g. handlers).",dsv:"Strejk (utanför flygbolaget, t.ex. bagagehanterare)."},
-{n:"99",a:"MX",en:"Other Reason",sv:"Övrig orsak",den:"Other or unspecified reason.",dsv:"Övrig orsak."}
+{n:"06",a:"OA",en:"No Gate/Stand Availability",sv:"Ingen gate/uppställningsplats (eget bolag)",den:"No gate/stand available due to own airline activity.",dsv:"Ingen gate/plats tillgänglig p.g.a. egna bolagets verksamhet.",f:"NO GATE/STAND AVAILABILITY DUE TO OWN AIRLINE ACTIVITY"},
+{n:"09",a:"SG",en:"Scheduled Ground Time",sv:"För kort planerad marktid",den:"Scheduled ground time less than declared minimum.",dsv:"Planerad marktid kortare än deklarerat minimum.",f:"SCHEDULED GROUND TIME LESS THAN DECLARED MINIMUM GROUND TIME"},
+{n:"11",a:"PD",en:"Late Check-in",sv:"Sen incheckning",den:"Late check-in, passengers arriving after deadline.",dsv:"Sen incheckning (efter deadline).",f:"LATE CHECK-IN, acceptance after deadline"},
+{n:"12",a:"PL",en:"Late Check-in, Congestion",sv:"Trängsel vid incheckning",den:"Congestion in the check-in area.",dsv:"Trängsel i incheckningsområdet.",f:"LATE CHECK-IN, congestions in check-in area"},
+{n:"13",a:"PE",en:"Check-in Error",sv:"Incheckningsfel",den:"Check-in error affecting passengers or baggage.",dsv:"Incheckningsfel (passagerare/bagage).",f:"CHECK-IN ERROR, passenger and baggage"},
+{n:"14",a:"PO",en:"Oversales",sv:"Överbokning",den:"Oversales or booking errors.",dsv:"Överbokning eller bokningsfel.",f:"OVERSALES, booking errors"},
+{n:"15",a:"PH",en:"Boarding",sv:"Ombordstigning",den:"Boarding problems (e.g. missing passenger).",dsv:"Problem vid boarding (saknad passagerare).",f:"BOARDING, discrepancies and paging, missing checked-in passenger"},
+{n:"16",a:"PS",en:"Commercial Publicity",sv:"VIP / Press",den:"Commercial publicity, VIPs or passenger convenience.",dsv:"Press, VIP eller passagerarbekvämlighet.",f:"COMMERCIAL PUBLICITY/PASSENGER CONVENIENCE, VIP, press, ground meals and missing personal items"},
+{n:"17",a:"PC",en:"Catering Order",sv:"Cateringbeställning",den:"Late or incorrect catering order.",dsv:"Sen/felaktig cateringbeställning.",f:"CATERING ORDER, late or incorrect order given to supplier"},
+{n:"18",a:"PB",en:"Baggage Processing",sv:"Bagagehantering",den:"Problems with baggage sortation.",dsv:"Problem med bagagesortering.",f:"BAGGAGE PROCESSING, sorting etc."},
+{n:"19",a:"PW",en:"Reduced Mobility",sv:"Nedsatt rörlighet",den:"Delayed handling of passengers with reduced mobility.",dsv:"Försenad hantering av PRM (rullstolspassagerare).",f:"REDUCED MOBILITY, boarding/deboarding of passengers with reduced mobility"},
+{n:"21",a:"CD",en:"Documentation",sv:"Fraktdokumentation",den:"Errors or delays in cargo documentation.",dsv:"Fel eller försening i fraktdokumentation.",f:"DOCUMENTATION, errors etc."},
+{n:"22",a:"CP",en:"Late Positioning",sv:"Sen lastpositionering",den:"Cargo positioned late at the aircraft.",dsv:"Frakten positionerad för sent vid planet.",f:"LATE POSITIONING"},
+{n:"23",a:"CC",en:"Late Acceptance",sv:"Sen fraktinlämning",den:"Late acceptance of cargo.",dsv:"Sen inlämning av frakt.",f:"LATE ACCEPTANCE"},
+{n:"24",a:"CI",en:"Inadequate Packing",sv:"Bristfällig paketering",den:"Inadequate or incorrect packing of cargo.",dsv:"Otillräcklig eller felaktig paketering.",f:"INADEQUATE PACKING"},
+{n:"25",a:"CO",en:"Oversales",sv:"Överbokning frakt",den:"Oversales of cargo capacity.",dsv:"Överbokning av frakt.",f:"OVERSALES, booking errors"},
+{n:"26",a:"CU",en:"Late Preparation in Warehouse",sv:"Sen hantering (terminal)",den:"Late handling in the cargo terminal.",dsv:"Sen hantering i fraktterminalen.",f:"LATE PREPARATION IN WAREHOUSE"},
+{n:"27",a:"CE",en:"Documentation (Mail)",sv:"Dokumentation (post)",den:"Errors in mail documentation.",dsv:"Fel i postdokumentation.",f:"DOCUMENTATION, PACKING etc. (Mail Only)"},
+{n:"28",a:"CL",en:"Late Positioning (Mail)",sv:"Sen positionering (post)",den:"Late positioning of mail at the aircraft.",dsv:"Sen positionering av post.",f:"LATE POSITIONING (Mail Only)"},
+{n:"29",a:"CA",en:"Late Acceptance (Mail)",sv:"Sen inlämning (post)",den:"Late acceptance of mail.",dsv:"Sen inlämning av post.",f:"LATE ACCEPTANCE (Mail Only)"},
+{n:"31",a:"GD",en:"Aircraft Documentation",sv:"Flygplansdokumentation",den:"Late or incorrect aircraft documentation (e.g. Loadsheet).",dsv:"Sena/felaktiga dokument (t.ex. Loadsheet).",f:"AIRCRAFT DOCUMENTATION LATE/INACCURATE, weight and balance, general declaration, pax manifest etc."},
+{n:"32",a:"GL",en:"Loading / Unloading",sv:"Lastning / Lossning",den:"Delay in loading or unloading (e.g. bulky items).",dsv:"Försening vid lastning/lossning (skrymmande).",f:"LOADING/UNLOADING, bulky, special load, cabin load, lack of loading staff"},
+{n:"33",a:"GE",en:"Loading Equipment",sv:"Lastningsutrustning",den:"Lack of or breakdown of loading equipment.",dsv:"Brist på lastningsutrustning (t.ex. loader).",f:"LOADING EQUIPMENT, lack of or breakdown, e.g. container pallet loader, lack of staff"},
+{n:"34",a:"GS",en:"Servicing Equipment",sv:"Serviceutrustning",den:"Lack of or breakdown of servicing equipment (e.g. stairs, GPU).",dsv:"Brist på serviceutrustning (trappor, GPU).",f:"SERVICING EQUIPMENT, lack of or breakdown, lack of staff, e.g. steps"},
+{n:"35",a:"GC",en:"Aircraft Cleaning",sv:"Flygplansstädning",den:"Aircraft cleaning delayed.",dsv:"Flygplansstädning försenad.",f:"AIRCRAFT CLEANING"},
+{n:"36",a:"GF",en:"Fuelling / Defuelling",sv:"Tankning",den:"Fuelling or defuelling delayed.",dsv:"Tankning försenad.",f:"FUELLING/DEFUELLING, fuel supplier"},
+{n:"37",a:"GB",en:"Catering",sv:"Catering",den:"Catering delivery delayed.",dsv:"Cateringleverans försenad.",f:"CATERING, late delivery or loading"},
+{n:"38",a:"GU",en:"ULD",sv:"Lastcontainrar",den:"Lack of or damaged Unit Load Devices.",dsv:"Brist på eller trasiga lastcontainrar.",f:"ULD, lack of or serviceability"},
+{n:"39",a:"GT",en:"Technical Equipment",sv:"Teknisk utrustning",den:"Lack of technical equipment (e.g. pushback truck).",dsv:"Brist på teknisk utrustning (t.ex. pushback-truck).",f:"TECHNICAL EQUIPMENT, lack of or breakdown, lack of staff, e.g. pushback"},
+{n:"41",a:"TD",en:"Aircraft Defects",sv:"Tekniskt fel",den:"Technical defects on the aircraft.",dsv:"Tekniskt fel på flygplanet.",f:"AIRCRAFT DEFECTS"},
+{n:"42",a:"TM",en:"Scheduled Maintenance",sv:"Planerat underhåll",den:"Scheduled maintenance exceeded planned time.",dsv:"Schemalagt underhåll drog ut på tiden.",f:"SCHEDULED MAINTENANCE, late release"},
+{n:"43",a:"TN",en:"Non-scheduled Maintenance",sv:"Oplanerat underhåll",den:"Non-scheduled maintenance required.",dsv:"Oplanerat underhåll krävdes.",f:"NON-SCHEDULED MAINTENANCE, special checks and/or additional works beyond normal maintenance schedule"},
+{n:"44",a:"TS",en:"Spares and Equipment",sv:"Reservdelar och utrustning",den:"Lack of or defective technical equipment/spares.",dsv:"Brist på/trasig teknisk utrustning eller reservdelar.",f:"SPARES AND MAINTENANCE EQUIPMENT, lack of or breakdown"},
+{n:"45",a:"TA",en:"AOG Spares",sv:"AOG Reservdelar",den:"Waiting for AOG (Aircraft On Ground) spares.",dsv:"Akut väntan på AOG-reservdelar (Aircraft On Ground).",f:"AOG SPARES, to be carried to another station"},
+{n:"46",a:"TC",en:"Aircraft Change",sv:"Flygplansbyte",den:"Aircraft change for technical reasons.",dsv:"Byte av flygplan av tekniska skäl.",f:"AIRCRAFT CHANGE, for technical reasons"},
+{n:"47",a:"TL",en:"Stand-by Aircraft",sv:"Reservflygplan",den:"Waiting for a scheduled stand-by aircraft.",dsv:"Väntar på planerat reservflygplan.",f:"STAND-BY AIRCRAFT, lack of planned stand-by aircraft for technical reasons"},
+{n:"48",a:"TV",en:"Cabin Configuration",sv:"Kabinkonfiguration",den:"Delay due to cabin reconfiguration (e.g. moving curtains).",dsv:"Försening p.g.a. ombyggnad av kabinen (t.ex. flytta skynken).",f:"SCHEDULED CABIN CONFIGURATION/VERSION ADJUSTMENTS"},
+{n:"51",a:"DF",en:"Damage During Flight Operations",sv:"Skada under flygning",den:"Damage incurred in the air (e.g. bird strike).",dsv:"Skada i luften (t.ex. fågelkrock, hård landning).",f:"DAMAGE DURING FLIGHT OPERATIONS, bird or lightning strike, turbulence, heavy or overweight landing, collision during taxiing"},
+{n:"52",a:"DG",en:"Damage During Ground Operations",sv:"Skada på marken",den:"Damage incurred on the ground (e.g. hit by vehicle).",dsv:"Skada på marken (t.ex. påkörd av fordon).",f:"DAMAGE DURING GROUND OPERATIONS, collisions (other than during taxiing), loading/off-loading damage, contamination, towing, extreme weather conditions"},
+{n:"55",a:"ED",en:"Departure Control System (DCS)",sv:"Incheckningssystem (DCS)",den:"Failure in check-in/boarding systems.",dsv:"Fel i inchecknings-/boarding-system.",f:"DEPARTURE CONTROL"},
+{n:"56",a:"EC",en:"Cargo Preparation System",sv:"Fraktsystem",den:"Failure in cargo preparation systems.",dsv:"Fel i fraktsystem/dokumentation.",f:"CARGO PREPARATION/DOCUMENTATION"},
+{n:"57",a:"EF",en:"Flight Plans",sv:"Färdplanssystem",den:"Failure in flight planning data systems.",dsv:"Fel i datasystemet för färdplaner.",f:"FLIGHT PLANS"},
+{n:"58",a:"EO",en:"Other Automated Systems",sv:"Övriga IT-system",den:"Other IT system outages (e.g. baggage sorting, FIDS).",dsv:"Andra IT-avbrott (bagagesystem, skärmar).",f:"OTHER AUTOMATED SYSTEM"},
+{n:"61",a:"FP",en:"Flight Plan",sv:"Färdplan",den:"Late flight planning or changes to the flight plan.",dsv:"Sen färdplanering eller ändringar.",f:"FLIGHT PLAN, late completion or change of, flight documentation"},
+{n:"62",a:"FF",en:"Operational Requirements",sv:"Operativa krav",den:"Operational requirements (e.g. fuel or load changes).",dsv:"Operativa krav (ex. bränsle- eller laständring).",f:"OPERATIONAL REQUIREMENTS, fuel, load alteration"},
+{n:"63",a:"FT",en:"Late Crew Boarding",sv:"Sen besättning",den:"Late boarding of flight/cabin crew.",dsv:"Flygande besättning anlände sent.",f:"LATE CREW BOARDING OR DEPARTURE PROCEDURES, other than connection and standby (flight deck or entire crew)"},
+{n:"64",a:"FS",en:"Flight Deck Crew Shortage",sv:"Pilotbrist",den:"Shortage of flight deck crew.",dsv:"Brist på piloter.",f:"FLIGHT DECK CREW SHORTAGE, sickness, awaiting standby, flight time limitations, crew meals, valid visa, health documents etc."},
+{n:"65",a:"FR",en:"Flight Deck Crew Request",sv:"Begäran från pilot",den:"Special request from flight deck crew.",dsv:"Särskild begäran från pilot.",f:"FLIGHT DECK CREW SPECIAL REQUEST, not within operational requirements"},
+{n:"66",a:"FL",en:"Late Cabin Crew Boarding",sv:"Sen kabinpersonal",den:"Late boarding of cabin crew.",dsv:"Kabinpersonal anlände sent.",f:"LATE CABIN CREW BOARDING OR DEPARTURE PROCEDURES, other than connection and standby"},
+{n:"67",a:"FC",en:"Cabin Crew Shortage",sv:"Kabinpersonalbrist",den:"Shortage of cabin crew.",dsv:"Brist på kabinpersonal.",f:"CABIN CREW SHORTAGE, sickness, awaiting standby, flight time limitations, crew meals, valid visa, health documents etc."},
+{n:"68",a:"FA",en:"Cabin Crew Error",sv:"Kabinpersonal (fel/begäran)",den:"Human error by cabin crew or specific request.",dsv:"Mänskligt fel av kabinpersonal eller specifik begäran.",f:"CABIN CREW ERROR OR SPECIAL REQUEST, not within operational requirements"},
+{n:"69",a:"FB",en:"Captain Request for Security",sv:"Kapten begär säkerhetskontroll",den:"Captain requests extra security checks.",dsv:"Kaptenen begär extra säkerhetskontroll.",f:"CAPTAIN REQUEST FOR SECURITY CHECK, extraordinary"},
+{n:"71",a:"WO",en:"Departure Station",sv:"Väder avgång",den:"Bad weather at departure station.",dsv:"Dåligt väder på avgångsflygplatsen.",f:"DEPARTURE STATION"},
+{n:"72",a:"WT",en:"Destination Station",sv:"Väder ankomst",den:"Bad weather at destination station.",dsv:"Dåligt väder på ankomstflygplatsen.",f:"DESTINATION STATION"},
+{n:"73",a:"WR",en:"En Route or Alternate",sv:"Väder på väg/reserv",den:"Bad weather en route or at alternate station.",dsv:"Dåligt väder på rutten eller reservflygplatsen.",f:"EN ROUTE OR ALTERNATE"},
+{n:"75",a:"WI",en:"De-Icing of Aircraft",sv:"Avisning",den:"De-icing of the aircraft.",dsv:"Avisning av flygplanet.",f:"DE-ICING OF AIRCRAFT, removal of ice and/or snow, frost prevention excluding unserviceability of equipment"},
+{n:"76",a:"WS",en:"Removal of Snow/Ice/Water/Sand",sv:"Snöröjning",den:"Snow or runway clearance at the airport.",dsv:"Snö-/banröjning på flygplatsen.",f:"REMOVAL OF SNOW, ICE, WATER AND SAND FROM AIRPORT"},
+{n:"77",a:"WG",en:"Ground Handling Impaired",sv:"Påverkad marktjänst (väder)",den:"Ground handling impaired by extreme weather.",dsv:"Marktjänst fördröjd av extremt väder (åska etc).",f:"GROUND HANDLING IMPAIRED BY ADVERSE WEATHER CONDITIONS"},
+{n:"81",a:"AT",en:"ATC Restriction, En-route",sv:"ATC-restriktion (rutt)",den:"ATC capacity restrictions en-route.",dsv:"Restriktioner på rutten (kapacitet).",f:"ATFM due to ATC EN-ROUTE DEMAND/CAPACITY, standard demand/capacity problems"},
+{n:"82",a:"AX",en:"ATC Restriction, Staff/Equipment",sv:"ATC-problem (personal/utrustning)",den:"ATC problems due to staff shortage or equipment failure.",dsv:"Flygledningsproblem (personalbrist, radarfel).",f:"ATFM due to ATC STAFF/EQUIPMENT EN-ROUTE, reduced capacity caused by industrial action or staff shortage, equipment failure, military exercise or extraordinary demand due to capacity reduction in neighbouring area"},
+{n:"83",a:"AE",en:"ATC Restriction at Destination",sv:"ATC-restriktion (ankomst)",den:"ATC capacity restrictions at destination.",dsv:"Kapacitetsrestriktion vid ankomstflygplats.",f:"ATFM due to RESTRICTION AT DESTINATION AIRPORT, airport and/or runway closed due to obstruction, industrial action, staff shortage, political unrest, noise abatement, night curfew, special flights"},
+{n:"84",a:"AW",en:"ATC Restriction, Weather",sv:"ATC-restriktion (väder)",den:"Weather-related restrictions imposed by ATC.",dsv:"Väderrestriktioner utfärdade av ATC.",f:"ATFM due to WEATHER AT DESTINATION"},
+{n:"85",a:"AS",en:"Mandatory Security",sv:"Säkerhetsåtgärd",den:"Mandatory security measures (e.g. bomb threat).",dsv:"Tvingande säkerhetsåtgärd (bombhot etc).",f:"MANDATORY SECURITY"},
+{n:"86",a:"AG",en:"Immigration, Customs, Health",sv:"Myndigheter",den:"Delays due to immigration, customs, or health authorities.",dsv:"Tull, gränspolis eller hälsomyndigheter.",f:"IMMIGRATION, CUSTOMS, HEALTH"},
+{n:"87",a:"AF",en:"Airport Facilities",sv:"Flygplatsfaciliteter",den:"Failure of airport facilities (e.g. parking, airbridges).",dsv:"Fel på flygplatsanläggning (parkering, bryggor).",f:"AIRPORT FACILITIES, parking stands, ramp congestion, lighting, buildings, gate limitations etc."},
+{n:"88",a:"AD",en:"Restrictions at Destination",sv:"Restriktioner ankomstflygplats",den:"Destination airport closed or restricted.",dsv:"Ankomstflygplats stängd.",f:"RESTRICTIONS AT AIRPORT OF DESTINATION, airport and/or runway closed due to obstruction, industrial action, staff shortage, political unrest, noise abatement, night curfew, special flights"},
+{n:"89",a:"AM",en:"Restrictions at Departure",sv:"Restriktioner avgångsflygplats",den:"Departure airport closed or restricted.",dsv:"Avgångsflygplats stängd/begränsad.",f:"RESTRICTIONS AT AIRPORT OF DEPARTURE WITH OR WITHOUT ATFM RESTRICTIONS, including Air Traffic Services, start-up and pushback, airport and/or runway closed due to obstruction or weather, industrial action, staff shortage, political unrest, noise abatement, night curfew, special flights"},
+{n:"91",a:"RL",en:"Load Connection",sv:"Anslutande last",den:"Awaiting connecting passengers, baggage or cargo.",dsv:"Väntar på anslutande passagerare/bagage från annat flyg.",f:"LOAD CONNECTION, awaiting load from another flight"},
+{n:"92",a:"RT",en:"Through Flight",sv:"Genomgående flygning",den:"Problems on through flights or transfer check-in.",dsv:"Problem vid genomgående flygning/transfer-incheckning.",f:"THROUGH CHECK-IN ERROR, passenger and baggage"},
+{n:"93",a:"RA",en:"Aircraft Rotation",sv:"Sen ankomst flygplan",den:"Aircraft arrived late from its previous sector.",dsv:"Flygplanet ankom sent från sin förra destination.",f:"AIRCRAFT ROTATION, late arrival of aircraft from another flight or previous sector"},
+{n:"94",a:"RS",en:"Cabin Crew Rotation",sv:"Kabinpersonal rotation",den:"Cabin crew connecting late from another flight.",dsv:"Kabinpersonal ansluter sent från en annan flygning.",f:"CABIN CREW ROTATION, awaiting cabin crew from another flight"},
+{n:"95",a:"RC",en:"Crew Rotation",sv:"Pilotrotation",den:"Flight crew connecting late from another flight.",dsv:"Piloter ansluter sent från en annan flygning.",f:"CREW ROTATION, awaiting crew from another flight (flight deck or entire crew)"},
+{n:"96",a:"RO",en:"Operations Control",sv:"Operationsstyrning",den:"Re-routing ordered by Operations Control.",dsv:"Operationscentralen beordrar routing-ändring.",f:"OPERATIONS CONTROL, re-routing, diversion, consolidation, aircraft change for reasons other than technical"},
+{n:"97",a:"MI",en:"Industrial Action with Own Airline",sv:"Strejk (eget flygbolag)",den:"Industrial action within the airline.",dsv:"Strejk (inom det egna flygbolaget).",f:"INDUSTRIAL ACTION WITH OWN AIRLINE"},
+{n:"98",a:"MO",en:"Industrial Action Outside Airline",sv:"Strejk (externt)",den:"Industrial action outside the airline (e.g. handlers).",dsv:"Strejk (utanför flygbolaget, t.ex. bagagehanterare).",f:"INDUSTRIAL ACTION OUTSIDE OWN AIRLINE, excluding ATS"},
+{n:"99",a:"MX",en:"Other Reason",sv:"Övrig orsak",den:"Other or unspecified reason.",dsv:"Övrig orsak.",f:"OTHER REASON, not matching any code above"}
 ];
 
 const CATS={
+ "0":{sv:"Interna orsaker (flygbolag)",en:"Airline Internal",c:"var(--c90)"},
  "1":{sv:"Passagerare & bagage",en:"Passenger & Baggage",c:"var(--c10)"},
  "2":{sv:"Frakt & post",en:"Cargo & Mail",c:"var(--c20)"},
  "3":{sv:"Markhantering",en:"Ramp Handling",c:"var(--c30)"},
@@ -217,11 +220,13 @@ const T={
      none:"Inga träffar",tryagain:"Prova ett annat sökord eller rensa filtret.",
      other:"English",copy:"Kopiera kod",copied:"Kopierad!",
      expand:"Fäll ut alla",collapse:"Fäll ihop alla",
+     formal:"Officiell IATA-definition (AHM 730)",
      foot:"IATA Delay Codes (AHM 730) · Fungerar offline · Data lagras endast på din enhet"},
  en:{all:"All",search:"Search code, word or reason…",hits:n=>n+" of "+DATA.length+" codes",
      none:"No matches",tryagain:"Try another search term or clear the filter.",
      other:"Svenska",copy:"Copy code",copied:"Copied!",
      expand:"Expand all",collapse:"Collapse all",
+     formal:"Official IATA definition (AHM 730)",
      foot:"IATA Delay Codes (AHM 730) · Works offline · Data stays on your device"}
 };
 
@@ -254,7 +259,8 @@ function score(item,q){
   if(d1.includes(nq)) return 400;
   if(d2.includes(nq)) return 300;
   // all words must appear somewhere
-  const hay=item.n+" "+norm(item.a)+" "+t1+" "+t2+" "+d1+" "+d2;
+  if(norm(item.f).includes(nq)) return 250;
+  const hay=item.n+" "+norm(item.a)+" "+t1+" "+t2+" "+d1+" "+d2+" "+norm(item.f);
   const words=nq.split(/\s+/).filter(Boolean);
   if(words.length>1 && words.every(w=>hay.includes(w))) return 200;
   return 0;
@@ -299,9 +305,11 @@ function render(){
   const cardHtml=it=>{
     const c=CATS[it.n[0]];
     const name=lang==="sv"?it.sv:it.en;
-    const desc=lang==="sv"?it.dsv:it.den;
-    const oName=lang==="sv"?it.en:it.sv;
-    const oDesc=lang==="sv"?it.den:it.dsv;
+    // EN: officiell definition direkt på kortet. SV: svensk förklaring på kortet, officiell definition i detaljen.
+    const desc=lang==="sv"?it.dsv:it.f;
+    const detail=lang==="sv"
+      ?`<div class="lbl">${t.formal}</div><div class="formal">${esc(it.f)}</div>`
+      :"";
     return `<div class="card" data-code="${it.n}">
       <div class="row">
         <div class="codebox"><div class="num" style="color:${c.c}">${hl(it.n,query)}</div><div class="alpha">${hl(it.a,query)}</div></div>
@@ -311,9 +319,7 @@ function render(){
         </div>
       </div>
       <div class="detail">
-        <div class="lbl">${lang==="sv"?"English":"Svenska"}</div>
-        <div>${esc(oName)}</div>
-        <div class="other">${esc(oDesc)}</div>
+        ${detail}
         <button class="copy" data-copy="${it.n}">${t.copy} ${it.n}</button>
       </div>
     </div>`;
