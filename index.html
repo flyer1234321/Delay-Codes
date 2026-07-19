@@ -283,11 +283,13 @@ function render(){
   }
   document.getElementById("chips").innerHTML=chips.join("");
 
-  // filter + rank
-  let items=DATA.filter(it=>cats.size===0||cats.has(it.n[0]));
+  // filter + rank (sökning ignorerar kategorifiltret och söker bland ALLA koder)
+  let items;
   if(query){
-    items=items.map(it=>({it,s:score(it,query)})).filter(x=>x.s>0)
+    items=DATA.map(it=>({it,s:score(it,query)})).filter(x=>x.s>0)
       .sort((a,b)=>b.s-a.s||a.it.n.localeCompare(b.it.n)).map(x=>x.it);
+  }else{
+    items=DATA.filter(it=>cats.size===0||cats.has(it.n[0]));
   }
   document.getElementById("count").textContent=t.hits(items.length);
   document.getElementById("foot").textContent=t.foot;
